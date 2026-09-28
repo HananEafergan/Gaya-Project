@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Gaya_Server.Controllers
 {
+    /// <summary>
+    /// HTTP API for showing or hiding operators and running calculations.
+    /// </summary>
     [ApiController]
     [Route("api/GayaProject")]
     public class GayaController : ControllerBase
@@ -13,6 +16,9 @@ namespace Gaya_Server.Controllers
         public GayaController(GayaService gayaService) => _gayaService = gayaService;
 
 
+        /// <summary>
+        /// Returns the names of operators that are currently shown.
+        /// </summary>
         [HttpGet]
         [Route("GetActiveOperators")]
         public IActionResult GetActiveOperators()
@@ -22,6 +28,9 @@ namespace Gaya_Server.Controllers
 
         }
 
+        /// <summary>
+        /// Returns every operator, including hidden ones, for the edit list.
+        /// </summary>
         [HttpGet]
         [Route("GetAllOperators")]
         public IActionResult GetAllOperators()
@@ -30,6 +39,9 @@ namespace Gaya_Server.Controllers
             return GetActionResult(res);
         }
 
+        /// <summary>
+        /// Hides an existing operator. The row stays in the database.
+        /// </summary>
         [HttpDelete]
         [Route("DeleteOperator/{id}")]
         public IActionResult DeleteOperator(int id)
@@ -39,6 +51,9 @@ namespace Gaya_Server.Controllers
             return GetActionResult(res);
         }
 
+        /// <summary>
+        /// Shows an existing operator again. Does not insert a new row.
+        /// </summary>
         [HttpPut]
         [Route("AddOperator/{id}")]
         public IActionResult AddOperator(int id)
@@ -48,6 +63,9 @@ namespace Gaya_Server.Controllers
             return GetActionResult(res);
         }
 
+        /// <summary>
+        /// Runs one calculation and returns its result, the three previous operations, and this month's count.
+        /// </summary>
         [HttpPost]
         [Route("Calculate")]
         public IActionResult Calculate([FromBody] CalculationRequest request)

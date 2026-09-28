@@ -4,6 +4,9 @@ using System.Net;
 
 namespace Gaya_Server.BLL
 {
+    /// <summary>
+    /// Applies operator visibility rules and performs calculations.
+    /// </summary>
     public class GayaService
     {
         private readonly GayaDAL _gayaDAL;
@@ -15,6 +18,9 @@ namespace Gaya_Server.BLL
             _logger = logger;
         }
 
+        /// <summary>
+        /// Returns the names of operators that can be used in a calculation.
+        /// </summary>
         public Result<string[]> GetActiveOperators()
         {
             Result<string[]> result = new();
@@ -33,6 +39,9 @@ namespace Gaya_Server.BLL
         }
 
 
+        /// <summary>
+        /// Returns every operator so a hidden one can be shown again.
+        /// </summary>
         public Result<List<Operator>> GetAllOperators()
         {
             Result<List<Operator>> result = new();
@@ -49,6 +58,9 @@ namespace Gaya_Server.BLL
             return result;
         }
 
+        /// <summary>
+        /// Sets whether an existing operator is shown. <paramref name="isActive"/> true shows it; false hides it.
+        /// </summary>
         public Result<string> UpdateOperator(int id, bool isActive)
         {
             Result<string> result = new();
@@ -65,6 +77,10 @@ namespace Gaya_Server.BLL
             return result;
         }
 
+        /// <summary>
+        /// Calculates the request, stores it, and returns the new result separately from the three operations saved before it.
+        /// The monthly count includes the operation just stored.
+        /// </summary>
         public Result<CalculationResponse> Calculate(CalculationRequest request)
         {
             Result<CalculationResponse> result = new();

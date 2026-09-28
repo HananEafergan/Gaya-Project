@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Gaya_Server.Filters
 {
+    /// <summary>
+    /// Logs each controller request before the action runs and the response body after it returns.
+    /// </summary>
     public class RequestResponseLoggingFilter : IActionFilter
     {
         private readonly ILogger<RequestResponseLoggingFilter> _logger;
@@ -13,6 +16,9 @@ namespace Gaya_Server.Filters
             _logger = logger;
         }
 
+        /// <summary>
+        /// Logs the HTTP method, path, and the arguments bound for the action.
+        /// </summary>
         public void OnActionExecuting(ActionExecutingContext context)
         {
             _logger.LogInformation(
@@ -22,6 +28,9 @@ namespace Gaya_Server.Filters
                 context.ActionArguments);
         }
 
+        /// <summary>
+        /// Logs the status code and body when the action returned an object result.
+        /// </summary>
         public void OnActionExecuted(ActionExecutedContext context)
         {
             if (context.Result is ObjectResult result)

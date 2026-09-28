@@ -1,5 +1,8 @@
 ﻿namespace Gaya_Server.Models
 {
+    /// <summary>
+    /// One stored calculation.
+    /// </summary>
     public class OperationHistory
     {
         public int Id { get; set; }
