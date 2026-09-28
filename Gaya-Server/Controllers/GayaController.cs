@@ -22,6 +22,40 @@ namespace Gaya_Server.Controllers
 
         }
 
+        [HttpGet]
+        [Route("GetAllOperators")]
+        public IActionResult GetAllOperators()
+        {
+            Result<List<Operator>> res = _gayaService.GetAllOperators();
+            return GetActionResult(res);
+        }
+
+        [HttpDelete]
+        [Route("DeleteOperator/{id}")]
+        public IActionResult DeleteOperator(int id)
+        {
+            Result<string> res = _gayaService.UpdateOperator(id, false);
+
+            return GetActionResult(res);
+        }
+
+        [HttpPut]
+        [Route("AddOperator/{id}")]
+        public IActionResult AddOperator(int id)
+        {
+            Result<string> res = _gayaService.UpdateOperator(id, true);
+
+            return GetActionResult(res);
+        }
+
+        [HttpPost]
+        [Route("Calculate")]
+        public IActionResult Calculate([FromBody] CalculationRequest request)
+        {
+            Result<string> res = _gayaService.Calculate(request);
+            return GetActionResult(res);
+        }
+
         private IActionResult GetActionResult<T>(Result<T> result) => StatusCode((int)result.StatusCode, result);
     }
 }

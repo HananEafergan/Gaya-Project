@@ -18,7 +18,7 @@ namespace Gaya_Server.BLL
             Result<string[]> result = new();
             try
             {
-                
+
                 result.Value = _gayaDAL.GetActiveOperators();
                 result.StatusCode = HttpStatusCode.OK;
                 result.Message = "Operators retrieved successfully.";
@@ -28,6 +28,108 @@ namespace Gaya_Server.BLL
                 result = CatchException<string[]>(ex);
             }
             return result;
+        }
+
+
+        public Result<List<Operator>> GetAllOperators()
+        {
+            Result<List<Operator>> result = new();
+            try
+            {
+                result.Value = _gayaDAL.GetAllOperators();
+                result.StatusCode = HttpStatusCode.OK;
+                result.Message = "Operators retrieved successfully.";
+            }
+            catch (Exception ex)
+            {
+                result = CatchException<List<Operator>>(ex);
+            }
+            return result;
+        }
+
+        public Result<string> UpdateOperator(int id, bool isActive)
+        {
+            Result<string> result = new();
+            try
+            {
+                _gayaDAL.UpdateOperator(id, isActive);
+                result.StatusCode = HttpStatusCode.OK;
+                result.Message = "Operators list updated successfully.";
+            }
+            catch (Exception ex)
+            {
+                result = CatchException<string>(ex);
+            }
+            return result;
+        }
+
+        public Result<string> Calculate(CalculationRequest request)
+        {
+            Result<string> result = new();
+            try
+            {
+
+                double fieldA = 0, fieldB = 0;
+                string operationResult = string.Empty;
+
+                if (!_gayaDAL.IsOperatorActive(request.Operator))
+                {
+                    result.StatusCode = HttpStatusCode.BadRequest;
+                    result.Message = "Invalid operator.";
+                    return result;
+                }
+
+                if (request.Operator != "Concat" &&
+                    !TryParseNumbers(request, out fieldA, out fieldB))
+                {
+                    result.StatusCode = HttpStatusCode.BadRequest;
+                    result.Message = "Invalid parameters.";
+                    return result;
+                }
+
+                else if (request.Operator == "Divide" && fieldB == 0)
+                {
+                    result.StatusCode = HttpStatusCode.BadRequest;
+                    result.Message = "Division by zero is not allowed.";
+                    return result;
+                }
+
+                switch (request.Operator)
+                {
+                    case "Add":
+                        operationResult = (fieldA + fieldB).ToString();
+                        break;
+                    case "Subtract":
+                        operationResult = (fieldA - fieldB).ToString();
+                        break;
+                    case "Multiply":
+                        operationResult = (fieldA * fieldB).ToString();
+                        break;
+                    case "Divide":
+                        operationResult = (fieldA / fieldB).ToString();
+                        break;
+                    case "Concat":
+                        operationResult = $"{request.FieldA}{request.FieldB}";
+                        break;
+                }
+
+                result.Value = $"Calculated result for {request.FieldA} {request.Operator} {request.FieldB} is {operationResult}";
+                result.StatusCode = HttpStatusCode.OK;
+                result.Message = "Calculation completed successfully.";
+            }
+            catch (Exception ex)
+            {
+                result = CatchException<string>(ex);
+            }
+            return result;
+        }
+
+        private static bool TryParseNumbers(CalculationRequest request, out double fieldA, out double fieldB)
+        {
+            bool isFieldAValid = double.TryParse(request.FieldA, out fieldA);
+            bool isFieldBValid = double.TryParse(request.FieldB, out fieldB);
+
+            return isFieldAValid && isFieldBValid;
         }
 
         private static Result<T> CatchException<T>(Exception ex)

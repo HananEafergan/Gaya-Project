@@ -1,6 +1,34 @@
 @Gaya_Server_HostAddress = http://localhost:5199
+@operatorId = 1
 
 GET {{Gaya_Server_HostAddress}}/api/GayaProject/GetActiveOperators
 Accept: application/json
+
+###
+
+GET {{Gaya_Server_HostAddress}}/api/GayaProject/GetAllOperators
+Accept: application/json
+
+###
+
+PUT {{Gaya_Server_HostAddress}}/api/GayaProject/AddOperator/{{operatorId}}
+Accept: application/json
+
+###
+
+DELETE {{Gaya_Server_HostAddress}}/api/GayaProject/DeleteOperator/{{operatorId}}
+Accept: application/json
+
+###
+
+POST {{Gaya_Server_HostAddress}}/api/GayaProject/Calculate
+Content-Type: application/json
+Accept: application/json
+
+{
+  "operator": "Add",
+  "fieldA": "2",
+  "fieldB": "3"
+}
 
 ###
