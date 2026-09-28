@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gaya Calculator</title>
+  <link rel="stylesheet" href="css/site.css" />
+</head>
+<body>
+  <main class="page">
+    <h1>Gaya Calculator</h1>
+
+    <form id="calculator" class="calculator">
+      <label>
+        Field A
+        <input id="field-a" type="text" autocomplete="off" />
+      </label>
+
+      <div class="operator-field">
+        <label>
+          Operator
+          <select id="operator">
+            <option value="">Select operator</option>
+          </select>
+        </label>
+        <button id="edit-operators" type="button">Edit Operators</button>
+      </div>
+
+      <label>
+        Field B
+        <input id="field-b" type="text" autocomplete="off" />
+      </label>
+
+      <button id="calculate" type="submit" disabled>Calculate</button>
+    </form>
+
+    <section id="edit-panel" class="panel" hidden>
+      <div class="panel-header">
+        <h2>Operators</h2>
+        <button id="done-editing" type="button">Done</button>
+      </div>
+      <ul id="operator-list"></ul>
+    </section>
+
+    <p id="error" class="error" hidden></p>
+
+    <section id="output" class="output" hidden>
+      <p id="current-result" class="result"></p>
+      <h2>Previous calculations</h2>
+      <ul id="previous-calculations"></ul>
+      <p id="monthly-count"></p>
+    </section>
+  </main>
+  <script src="js/app.js"></script>
+</body>
+</html>
