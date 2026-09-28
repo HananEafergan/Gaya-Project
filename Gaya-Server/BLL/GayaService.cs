@@ -7,10 +7,12 @@ namespace Gaya_Server.BLL
     public class GayaService
     {
         private readonly GayaDAL _gayaDAL;
+        private readonly ILogger<GayaService> _logger;
 
-        public GayaService(GayaDAL gayaDAL)
+        public GayaService(GayaDAL gayaDAL, ILogger<GayaService> logger)
         {
             _gayaDAL = gayaDAL;
+            _logger = logger;
         }
 
         public Result<string[]> GetActiveOperators()
@@ -132,8 +134,9 @@ namespace Gaya_Server.BLL
             return isFieldAValid && isFieldBValid;
         }
 
-        private static Result<T> CatchException<T>(Exception ex)
+        private  Result<T> CatchException<T>(Exception ex)
         {
+            _logger.LogError(ex, "An error occurred while processing the request.");
             return new Result<T>
             {
                 Value = default,
