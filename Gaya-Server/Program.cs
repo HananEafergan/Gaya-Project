@@ -3,10 +3,12 @@ using Gaya_Server.DAL;
 using Gaya_Server.Filters;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .WriteTo.File(
         "Logs/gaya-.log",
         rollingInterval: RollingInterval.Day)

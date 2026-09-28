@@ -52,7 +52,7 @@ namespace Gaya_Server.Controllers
         [Route("Calculate")]
         public IActionResult Calculate([FromBody] CalculationRequest request)
         {
-            Result<string> res = _gayaService.Calculate(request);
+            Result<CalculationResponse> res = _gayaService.Calculate(request);
             return GetActionResult(res);
         }
 

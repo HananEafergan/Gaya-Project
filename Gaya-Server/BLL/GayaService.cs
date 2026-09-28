@@ -65,12 +65,14 @@ namespace Gaya_Server.BLL
             return result;
         }
 
-        public Result<string> Calculate(CalculationRequest request)
+        public Result<CalculationResponse> Calculate(CalculationRequest request)
         {
-            Result<string> result = new();
+            Result<CalculationResponse> result = new();
             try
             {
 
+                List<OperationHistory> lastOperations;
+                int monthlyOperationCount;
                 double fieldA = 0, fieldB = 0;
                 string operationResult = string.Empty;
 
@@ -115,13 +117,34 @@ namespace Gaya_Server.BLL
                         break;
                 }
 
-                result.Value = $"Calculated result for {request.FieldA} {request.Operator} {request.FieldB} is {operationResult}";
+                var operationHistory = new OperationHistory
+                {
+                    Operator = request.Operator,
+                    FieldA = request.FieldA,
+                    FieldB = request.FieldB,
+                    Result = operationResult,
+                    CreatedAt = DateTime.Now
+                };
+
+                lastOperations = _gayaDAL.GetLastOperations(request.Operator);
+                
+                _gayaDAL.SaveOperation(operationHistory);
+
+                monthlyOperationCount = _gayaDAL.GetMonthlyOperationCount(request.Operator);
+
+                result.Value = new CalculationResponse
+                {
+                    Result = $"Result: {operationResult}",
+                    LastOperations = lastOperations,
+                    MonthlyOperationCount = monthlyOperationCount
+                };
+
                 result.StatusCode = HttpStatusCode.OK;
                 result.Message = "Calculation completed successfully.";
             }
             catch (Exception ex)
             {
-                result = CatchException<string>(ex);
+                result = CatchException<CalculationResponse>(ex);
             }
             return result;
         }
