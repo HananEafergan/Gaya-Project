@@ -1,0 +1,6 @@
+@Gaya_Server_HostAddress = http://localhost:5199
+
+GET {{Gaya_Server_HostAddress}}/api/GayaProject/GetActiveOperators
+Accept: application/json
+
+###
